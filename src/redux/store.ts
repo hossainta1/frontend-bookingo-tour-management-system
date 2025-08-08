@@ -5,7 +5,7 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 
 export const store = configureStore({
   reducer: {
-    [baseApi.reducerPath] :  baseApi.reducer
+    [baseApi.reducerPath] :  baseApi.reducer,
 },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(baseApi.middleware),
