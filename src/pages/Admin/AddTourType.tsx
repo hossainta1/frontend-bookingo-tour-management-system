@@ -2,11 +2,23 @@ import { DeleteConfirmation } from "@/components/DeleteConfirmation";
 import { AddTourTypeModal } from "@/components/modules/Admin/TourType/AddTourTypeModal";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
 import { useGetTourTypesQuery, useRemoveTourTypeMutation } from "@/redux/features/Tour/tour.api";
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { useState } from "react";
 
 export default function AddTourType() {
+
+    const [currentPage, setCurrentPage] = useState(1)
 
     const { data } = useGetTourTypesQuery(undefined);
 
@@ -57,6 +69,26 @@ export default function AddTourType() {
                         ))}
                     </TableBody>
                 </Table>
+            </div>
+            <div className="flex justify-end">
+                <div>
+                    <Pagination>
+                        <PaginationContent>
+                            <PaginationItem>
+                                <PaginationPrevious  onClick={() => setCurrentPage((prev) => prev - 1)}/>
+                            </PaginationItem>
+                            <PaginationItem>
+                                <PaginationLink href="#">1</PaginationLink>
+                            </PaginationItem>
+                            <PaginationItem>
+                                <PaginationEllipsis />
+                            </PaginationItem>
+                            <PaginationItem>
+                                <PaginationNext  onClick={() => setCurrentPage((prev) => prev + 1)}/>
+                            </PaginationItem>
+                        </PaginationContent>
+                    </Pagination>
+                </div>
             </div>
         </div>
     );

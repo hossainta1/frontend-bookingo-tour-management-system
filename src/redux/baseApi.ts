@@ -7,7 +7,7 @@ export const baseApi = createApi({
 
   // If i use Fetchbase quey instade of AxiosQuery
   // baseQuery : fetchBaseQuery({baseUrl: "aehbhebrh", credentials: "include"})
-  tagTypes: ["USER", "TOUR", "DIVISION"],
+  tagTypes: ["USER", "TOUR", "DIVISION", "BOOKING"],
 
   endpoints: () => ({}),
 });
