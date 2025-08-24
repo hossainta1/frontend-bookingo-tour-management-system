@@ -31,8 +31,8 @@ export default function TourFilters() {
       value: item._id,
     })
   );
-
-  const tourTypeOptions = tourTypeData?.map(
+ const tourTypes = tourTypeData?.data || [];
+  const tourTypeOptions = tourTypes?.map(
     (item: { _id: string; name: string }) => ({
       label: item.name,
       value: item._id,

@@ -5,7 +5,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import {
     Pagination,
     PaginationContent,
-    PaginationEllipsis,
     PaginationItem,
     PaginationLink,
     PaginationNext,
@@ -18,9 +17,10 @@ import { useState } from "react";
 
 export default function AddTourType() {
 
-    const [currentPage, setCurrentPage] = useState(1)
+    const [currentPage, setCurrentPage] = useState(1);
+    const [limit, setLimit] = useState(10)
 
-    const { data } = useGetTourTypesQuery(undefined);
+    const { data } = useGetTourTypesQuery({ page: currentPage, limit });
 
     const [removeTourType] = useRemoveTourTypeMutation();
 
@@ -39,6 +39,10 @@ export default function AddTourType() {
         }
 
     }
+    console.log(data)
+    const totalPage = data?.meta?.totalPage || 1;
+
+    console.log(totalPage)
 
     return (
         <div className="w-full max-w-7xl mx-auto px-5">
@@ -55,7 +59,7 @@ export default function AddTourType() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {data?.map((item: { _id: string; name: string }) => (
+                        {data?.data?.map((item: { _id: string; name: string }) => (
                             <TableRow key={item._id}>
                                 <TableCell className="font-medium w-full">{item.name}</TableCell>
                                 <TableCell className="font-medium w-full">
@@ -70,26 +74,40 @@ export default function AddTourType() {
                     </TableBody>
                 </Table>
             </div>
-            <div className="flex justify-end">
-                <div>
-                    <Pagination>
-                        <PaginationContent>
-                            <PaginationItem>
-                                <PaginationPrevious  onClick={() => setCurrentPage((prev) => prev - 1)}/>
-                            </PaginationItem>
-                            <PaginationItem>
-                                <PaginationLink href="#">1</PaginationLink>
-                            </PaginationItem>
-                            <PaginationItem>
-                                <PaginationEllipsis />
-                            </PaginationItem>
-                            <PaginationItem>
-                                <PaginationNext  onClick={() => setCurrentPage((prev) => prev + 1)}/>
-                            </PaginationItem>
-                        </PaginationContent>
-                    </Pagination>
+            {
+                totalPage > 1 && (
+                   <div className="flex justify-end mt-4">
+                    <div>
+                        <Pagination>
+                            <PaginationContent>
+                                <PaginationItem>
+                                    <PaginationPrevious onClick={() => setCurrentPage((prev) => prev - 1)}
+
+                                        className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                                    />
+                                </PaginationItem>
+                                {Array.from({ length: totalPage }, (_, index) => index + 1).map(
+                                    (page) => (
+                                        <PaginationItem
+                                            key={page}
+                                            onClick={() => setCurrentPage(page)}
+                                        >
+                                            <PaginationLink isActive={currentPage === page}>
+                                                {page}
+                                            </PaginationLink>
+                                        </PaginationItem>
+                                    )
+                                )}
+                                <PaginationItem>
+                                    <PaginationNext onClick={() => setCurrentPage((prev) => prev + 1)}
+                                        className={currentPage === totalPage ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                                    />
+                                </PaginationItem>
+                            </PaginationContent>
+                        </Pagination>
+                    </div>
                 </div>
-            </div>
+                )}
         </div>
     );
 }

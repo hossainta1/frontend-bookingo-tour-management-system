@@ -84,8 +84,8 @@ export default function AddTour() {
       label: item.name,
     })
   );
-
-  const tourTypeOptions = tourTypeData?.map(
+  const tourTypes = tourTypeData?.data || [];
+  const tourTypeOptions = tourTypes?.map(
     (tourType: { _id: string; name: string }) => ({
       value: tourType._id,
       label: tourType.name,
